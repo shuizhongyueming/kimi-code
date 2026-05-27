@@ -39,18 +39,14 @@ export const TuiConfigFileSchema = z.object({
       notification_condition: NotificationConditionSchema.optional(),
     })
     .optional(),
-  thinking: z
-    .object({
-      unbounded: z.boolean().optional(),
-    })
-    .optional(),
+  unbounded: z.array(z.string()).optional(),
 });
 
 export const TuiConfigSchema = z.object({
   theme: TuiThemeSchema,
   editorCommand: z.string().nullable(),
   notifications: NotificationsConfigSchema,
-  thinkingUnbounded: z.boolean(),
+  unbounded: z.array(z.string()),
 });
 
 export type TuiConfigFileShape = z.infer<typeof TuiConfigFileSchema>;
@@ -66,7 +62,7 @@ export const DEFAULT_TUI_CONFIG: TuiConfig = TuiConfigSchema.parse({
   theme: 'auto',
   editorCommand: null,
   notifications: DEFAULT_NOTIFICATIONS_CONFIG,
-  thinkingUnbounded: false,
+  unbounded: [],
 });
 
 /**
@@ -129,7 +125,7 @@ export function normalizeTuiConfig(config: TuiConfigFileShape): TuiConfig {
       condition:
         config.notifications?.notification_condition ?? DEFAULT_NOTIFICATIONS_CONFIG.condition,
     },
-    thinkingUnbounded: config.thinking?.unbounded ?? false,
+    unbounded: config.unbounded ?? [],
   });
 }
 
@@ -147,8 +143,7 @@ command = "${escapeTomlBasicString(config.editorCommand ?? '')}" # Empty uses $V
 enabled = ${String(config.notifications.enabled)} # true | false
 notification_condition = "${config.notifications.condition}" # "unfocused" | "always"
 
-[thinking]
-unbounded = ${String(config.thinkingUnbounded)} # true | false
+unbounded = ${JSON.stringify(config.unbounded)} # e.g. ["thinking"]
 `;
 }
 

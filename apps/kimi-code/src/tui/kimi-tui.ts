@@ -456,7 +456,7 @@ function createInitialAppState(input: KimiTUIStartupInput): AppState {
     version: input.version,
     editorCommand: input.tuiConfig.editorCommand,
     notifications: input.tuiConfig.notifications,
-    thinkingUnbounded: input.tuiConfig.thinkingUnbounded,
+    unboundedComponents: new Set(input.tuiConfig.unbounded),
     availableModels: {},
     availableProviders: {},
     sessionTitle: null,
@@ -3729,7 +3729,7 @@ export class KimiTUI {
         true,
         'live',
         this.state.ui,
-        this.state.appState.thinkingUnbounded ? Infinity : RESULT_PREVIEW_LINES,
+        this.state.appState.unboundedComponents.has('thinking') ? Infinity : RESULT_PREVIEW_LINES,
       );
       if (this.state.toolOutputExpanded) this.state.activeThinkingComponent.setExpanded(true);
       this.state.transcriptContainer.addChild(this.state.activeThinkingComponent);
@@ -4011,7 +4011,7 @@ export class KimiTUI {
           true,
           'finalized',
           undefined,
-          this.state.appState.thinkingUnbounded ? Infinity : RESULT_PREVIEW_LINES,
+          this.state.appState.unboundedComponents.has('thinking') ? Infinity : RESULT_PREVIEW_LINES,
         );
         if (this.state.toolOutputExpanded) thinking.setExpanded(true);
         return thinking;

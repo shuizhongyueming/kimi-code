@@ -38,6 +38,7 @@ describe('TUI config', () => {
     expect(text).toContain('[notifications]');
     expect(text).toContain('enabled = true');
     expect(text).toContain('notification_condition = "unfocused"');
+    expect(text).toContain('unbounded = []');
   });
 
   it('parses valid TOML', () => {
@@ -56,7 +57,7 @@ notification_condition = "always"
       theme: 'light',
       editorCommand: 'code --wait',
       notifications: { enabled: false, condition: 'always' },
-      thinkingUnbounded: false,
+      unbounded: [],
     });
   });
 
@@ -70,7 +71,7 @@ command = "   "
       theme: 'auto',
       editorCommand: null,
       notifications: { enabled: true, condition: 'unfocused' },
-      thinkingUnbounded: false,
+      unbounded: [],
     });
   });
 
@@ -100,7 +101,7 @@ command = "   "
         theme: 'light',
         editorCommand: 'vim',
         notifications: { enabled: false, condition: 'always' },
-        thinkingUnbounded: false,
+        unbounded: [],
       },
       filePath,
     );
@@ -109,7 +110,7 @@ command = "   "
       theme: 'light',
       editorCommand: 'vim',
       notifications: { enabled: false, condition: 'always' },
-      thinkingUnbounded: false,
+      unbounded: [],
     });
   });
 });
