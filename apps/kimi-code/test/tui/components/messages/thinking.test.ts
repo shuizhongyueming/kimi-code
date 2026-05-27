@@ -65,6 +65,26 @@ describe('ThinkingComponent', () => {
     expect(out).toContain('... (4 more lines, ctrl+o to expand)');
   });
 
+  it('shows all live thinking lines when unbounded', () => {
+    const component = new ThinkingComponent(longThinking, darkColors, true, 'live', undefined, Infinity);
+    const out = strip(component.render(80).join('\n'));
+
+    expect(out).toContain('line1');
+    expect(out).toContain('line4');
+    expect(out).toContain('line7');
+    expect(out).not.toContain('ctrl+o to expand');
+  });
+
+  it('renders full finalized thinking content when unbounded', () => {
+    const component = new ThinkingComponent(longThinking, darkColors, true, 'finalized', undefined, Infinity);
+
+    const out = strip(component.render(80).join('\n'));
+    expect(out).toContain('line1');
+    expect(out).toContain('line4');
+    expect(out).toContain('line7');
+    expect(out).not.toContain('ctrl+o to expand');
+  });
+
   it('expands and collapses after finalization', () => {
     const component = new ThinkingComponent(longThinking, darkColors, true, 'live');
     component.finalize();

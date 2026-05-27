@@ -122,7 +122,7 @@ import {
 import { DeviceCodeBoxComponent } from './components/chrome/device-code-box';
 import { FooterComponent } from './components/chrome/footer';
 import { GutterContainer } from './components/chrome/gutter-container';
-import { CHROME_GUTTER } from './constant/rendering';
+import { CHROME_GUTTER, RESULT_PREVIEW_LINES } from './constant/rendering';
 import { MoonLoader, type SpinnerStyle } from './components/chrome/moon-loader';
 import { TodoPanelComponent, type TodoItem } from './components/chrome/todo-panel';
 import { WelcomeComponent } from './components/chrome/welcome';
@@ -456,6 +456,7 @@ function createInitialAppState(input: KimiTUIStartupInput): AppState {
     version: input.version,
     editorCommand: input.tuiConfig.editorCommand,
     notifications: input.tuiConfig.notifications,
+    thinkingUnbounded: input.tuiConfig.thinkingUnbounded,
     availableModels: {},
     availableProviders: {},
     sessionTitle: null,
@@ -3728,6 +3729,7 @@ export class KimiTUI {
         true,
         'live',
         this.state.ui,
+        this.state.appState.thinkingUnbounded ? Infinity : RESULT_PREVIEW_LINES,
       );
       if (this.state.toolOutputExpanded) this.state.activeThinkingComponent.setExpanded(true);
       this.state.transcriptContainer.addChild(this.state.activeThinkingComponent);
@@ -4003,7 +4005,14 @@ export class KimiTUI {
         return component;
       }
       case 'thinking': {
-        const thinking = new ThinkingComponent(entry.content, this.state.theme.colors, true);
+        const thinking = new ThinkingComponent(
+          entry.content,
+          this.state.theme.colors,
+          true,
+          'finalized',
+          undefined,
+          this.state.appState.thinkingUnbounded ? Infinity : RESULT_PREVIEW_LINES,
+        );
         if (this.state.toolOutputExpanded) thinking.setExpanded(true);
         return thinking;
       }

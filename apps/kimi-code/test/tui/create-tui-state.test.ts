@@ -25,6 +25,7 @@ function fakeInitialAppState(): AppState {
     version: '0.0.0-test',
     editorCommand: null,
     notifications: { enabled: true, condition: 'unfocused' },
+    thinkingUnbounded: false,
     availableModels: {},
     availableProviders: {},
     sessionTitle: null,

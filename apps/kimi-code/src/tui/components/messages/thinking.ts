@@ -29,6 +29,7 @@ export class ThinkingComponent implements Component {
   private readonly ui: TUI | undefined;
   private spinnerFrame = 0;
   private spinnerInterval: ReturnType<typeof setInterval> | undefined;
+  private readonly maxPreviewLines: number;
 
   constructor(
     text: string,
@@ -36,12 +37,14 @@ export class ThinkingComponent implements Component {
     showMarker: boolean = true,
     mode: ThinkingRenderMode = 'finalized',
     ui?: TUI,
+    maxPreviewLines: number = RESULT_PREVIEW_LINES,
   ) {
     this.text = text;
     this.color = colors.roleThinking;
     this.showMarker = showMarker;
     this.mode = mode;
     this.ui = ui;
+    this.maxPreviewLines = maxPreviewLines;
     if (mode === 'live') {
       this.startSpinner();
     }
@@ -74,8 +77,8 @@ export class ThinkingComponent implements Component {
 
     if (this.mode === 'live') {
       const visibleLines =
-        contentLines.length > RESULT_PREVIEW_LINES
-          ? contentLines.slice(contentLines.length - RESULT_PREVIEW_LINES)
+        contentLines.length > this.maxPreviewLines
+          ? contentLines.slice(contentLines.length - this.maxPreviewLines)
           : contentLines;
       const spinner = chalk.hex(this.color)(
         `${BRAILLE_SPINNER_FRAMES[this.spinnerFrame] ?? BRAILLE_SPINNER_FRAMES[0]} `,
@@ -93,13 +96,13 @@ export class ThinkingComponent implements Component {
       rendered.push(p + contentLines[i]);
     }
 
-    if (this.expanded || contentLines.length <= RESULT_PREVIEW_LINES) {
+    if (this.expanded || contentLines.length <= this.maxPreviewLines) {
       return rendered;
     }
 
     // Leading blank + first PREVIEW_LINES content lines + hint line.
-    const truncated = rendered.slice(0, 1 + RESULT_PREVIEW_LINES);
-    const remaining = contentLines.length - RESULT_PREVIEW_LINES;
+    const truncated = rendered.slice(0, 1 + this.maxPreviewLines);
+    const remaining = contentLines.length - this.maxPreviewLines;
     truncated.push(
       MESSAGE_INDENT + chalk.dim(`... (${String(remaining)} more lines, ctrl+o to expand)`),
     );

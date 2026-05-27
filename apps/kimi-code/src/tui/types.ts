@@ -30,6 +30,7 @@ export interface AppState {
   version: string;
   editorCommand: string | null;
   notifications: NotificationsConfig;
+  thinkingUnbounded: boolean;
   availableModels: Record<string, ModelAlias>;
   availableProviders: Record<string, ProviderConfig>;
   sessionTitle: string | null;

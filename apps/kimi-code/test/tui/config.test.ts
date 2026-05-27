@@ -56,6 +56,7 @@ notification_condition = "always"
       theme: 'light',
       editorCommand: 'code --wait',
       notifications: { enabled: false, condition: 'always' },
+      thinkingUnbounded: false,
     });
   });
 
@@ -69,6 +70,7 @@ command = "   "
       theme: 'auto',
       editorCommand: null,
       notifications: { enabled: true, condition: 'unfocused' },
+      thinkingUnbounded: false,
     });
   });
 
@@ -98,6 +100,7 @@ command = "   "
         theme: 'light',
         editorCommand: 'vim',
         notifications: { enabled: false, condition: 'always' },
+        thinkingUnbounded: false,
       },
       filePath,
     );
@@ -106,6 +109,7 @@ command = "   "
       theme: 'light',
       editorCommand: 'vim',
       notifications: { enabled: false, condition: 'always' },
+      thinkingUnbounded: false,
     });
   });
 });
